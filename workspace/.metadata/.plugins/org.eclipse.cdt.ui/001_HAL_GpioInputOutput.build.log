@@ -1,0 +1,10 @@
+09:58:18 **** Incremental Build of configuration Debug for project 001_HAL_GpioInputOutput ****
+make -j16 all 
+arm-none-eabi-size  001_HAL_GpioInputOutput.elf 
+   text	   data	    bss	    dec	    hex	filename
+   2568	     12	   1572	   4152	   1038	001_HAL_GpioInputOutput.elf
+Finished building: default.size.stdout
+ 
+
+09:58:19 Build Finished. 0 errors, 0 warnings. (took 334ms)
+

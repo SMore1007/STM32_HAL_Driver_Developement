@@ -1,3 +1,0 @@
-../Drivers/GPIO/Src/gpio_input.c:4:24:GpioInputInit	16	static
-../Drivers/GPIO/Src/gpio_input.c:28:22:GpioInputRead	24	static
-../Drivers/GPIO/Src/gpio_input.c:49:6:GpioInputIsActive	16	static

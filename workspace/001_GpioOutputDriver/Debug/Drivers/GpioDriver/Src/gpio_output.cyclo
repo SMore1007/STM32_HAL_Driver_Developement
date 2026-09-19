@@ -1,7 +1,0 @@
-../Drivers/GpioDriver/Src/gpio_output.c:3:22:GpioOutput_GetInactiveLevel	2
-../Drivers/GpioDriver/Src/gpio_output.c:13:21:GpioOutput_Init	3
-../Drivers/GpioDriver/Src/gpio_output.c:30:21:GpioOutput_Set	3
-../Drivers/GpioDriver/Src/gpio_output.c:55:21:GpioOutput_On	1
-../Drivers/GpioDriver/Src/gpio_output.c:60:21:GpioOutput_Off	1
-../Drivers/GpioDriver/Src/gpio_output.c:65:21:GpioOutput_Toggle	2
-../Drivers/GpioDriver/Src/gpio_output.c:75:6:GpioOutput_GetState	2

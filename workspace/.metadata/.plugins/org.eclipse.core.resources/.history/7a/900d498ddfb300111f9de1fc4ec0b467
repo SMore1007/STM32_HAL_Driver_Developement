@@ -1,0 +1,64 @@
+
+#include <stdint.h>
+#include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_gpio.h"
+
+#define BTN_PORT GPIOC
+#define LED_PORT GPIOA
+
+#define LED_PIN GPIO_PIN_5
+#define BTN_PIN GPIO_PIN_13
+
+void PC13ButtonInit(void);
+void PA5LedInit(void);
+
+int main(void)
+{
+	PA5LedInit();
+	PC13ButtonInit();
+
+	for(;;);
+}
+
+
+
+void PC13ButtonInit(void)
+{
+	__HAL_RCC_GPIOA_CLK_ENABLE();
+
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+	GPIO_InitStruct.Pin    = LED_PIN;
+	GPIO_InitStruct.Mode   = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull   = GPIO_NOPULL;
+	GPIO_InitStruct.Speed  = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(LED_PORT, &GPIO_InitStruct);
+
+
+}
+
+void PA5LedInit(void)
+{
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+	GPIO_InitStruct.Pin    = BTN_PIN;
+	GPIO_InitStruct.Mode   = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull   = GPIO_NOPULL;
+	GPIO_InitStruct.Speed  = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(BTN_PORT, &GPIO_InitStruct);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
