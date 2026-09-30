@@ -37,15 +37,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_macro  000228fa  00000000  00000000  0000e4f1  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0000b256  00000000  00000000  00030deb  2**0
+ 17 .debug_line   0000b24c  00000000  00000000  00030deb  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000cf447  00000000  00000000  0003c041  2**0
+ 18 .debug_str    000cf447  00000000  00000000  0003c037  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  0010b488  2**0
+ 19 .comment      00000043  00000000  00000000  0010b47e  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00002610  00000000  00000000  0010b4cc  2**2
+ 20 .debug_frame  00002610  00000000  00000000  0010b4c4  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 000000a0  00000000  00000000  0010dadc  2**0
+ 21 .debug_line_str 000000a0  00000000  00000000  0010dad4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -5838,26 +5838,26 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
  80029ec:	51eb851f 	.word	0x51eb851f
 
 080029f0 <ReadAdc3PA0>:
-ADC_HandleTypeDef hadc3;
+ADC_HandleTypeDef hadc3;                        /* Define ADC3 handle structure instance */
 
-static void init_adc3_continous_conversion(void);
+static void init_adc3_continous_conversion(void); /* Prototype for static helper function to initialize ADC3 */
 
-uint32_t ReadAdc3PA0(void)
-{
+uint32_t ReadAdc3PA0(void)                      /* Function to trigger and read ADC3 conversion on PA0 */
+{                                               /* Start of ReadAdc3PA0 function */
  80029f0:	b580      	push	{r7, lr}
  80029f2:	af00      	add	r7, sp, #0
-    HAL_ADC_Start(&hadc3);
+    HAL_ADC_Start(&hadc3);                      /* Clears OVR & EOC flags and re-triggers SWSTART */
  80029f4:	4806      	ldr	r0, [pc, #24]	@ (8002a10 <ReadAdc3PA0+0x20>)
  80029f6:	f7fd fedd 	bl	80007b4 <HAL_ADC_Start>
-    HAL_ADC_PollForConversion(&hadc3, 100);
+    HAL_ADC_PollForConversion(&hadc3, 100);     /* Poll ADC until conversion completes with 100 ms timeout */
  80029fa:	2164      	movs	r1, #100	@ 0x64
  80029fc:	4804      	ldr	r0, [pc, #16]	@ (8002a10 <ReadAdc3PA0+0x20>)
  80029fe:	f7fd ff9f 	bl	8000940 <HAL_ADC_PollForConversion>
-    return HAL_ADC_GetValue(&hadc3);
+    return HAL_ADC_GetValue(&hadc3);            /* Read and return converted digital value from ADC_DR */
  8002a02:	4803      	ldr	r0, [pc, #12]	@ (8002a10 <ReadAdc3PA0+0x20>)
  8002a04:	f7fe f820 	bl	8000a48 <HAL_ADC_GetValue>
  8002a08:	4603      	mov	r3, r0
-}
+}                                               /* End of ReadAdc3PA0 function */
  8002a0a:	4618      	mov	r0, r3
  8002a0c:	bd80      	pop	{r7, pc}
  8002a0e:	bf00      	nop
@@ -5865,16 +5865,16 @@ uint32_t ReadAdc3PA0(void)
 
 08002a14 <Adc3InitStart>:
 
-void Adc3InitStart(void)
-{
+void Adc3InitStart(void)                        /* Function to initialize ADC3 and start conversion */
+{                                               /* Start of Adc3InitStart function */
  8002a14:	b580      	push	{r7, lr}
  8002a16:	af00      	add	r7, sp, #0
-	init_adc3_continous_conversion();
+    init_adc3_continous_conversion();           /* Configure GPIO PA0 pin and ADC3 module peripheral */
  8002a18:	f000 f808 	bl	8002a2c <init_adc3_continous_conversion>
-	HAL_ADC_Start(&hadc3);
+    HAL_ADC_Start(&hadc3);                      /* Start ADC continuous conversion process */
  8002a1c:	4802      	ldr	r0, [pc, #8]	@ (8002a28 <Adc3InitStart+0x14>)
  8002a1e:	f7fd fec9 	bl	80007b4 <HAL_ADC_Start>
-}
+}                                               /* End of Adc3InitStart function */
  8002a22:	bf00      	nop
  8002a24:	bd80      	pop	{r7, pc}
  8002a26:	bf00      	nop
@@ -5882,13 +5882,12 @@ void Adc3InitStart(void)
 
 08002a2c <init_adc3_continous_conversion>:
 
-static void init_adc3_continous_conversion(void)
-{
+static void init_adc3_continous_conversion(void) /* Static function to set up GPIO PA0 and ADC3 registers */
+{                                               /* Start of configuration helper function */
  8002a2c:	b580      	push	{r7, lr}
  8002a2e:	b08c      	sub	sp, #48	@ 0x30
  8002a30:	af00      	add	r7, sp, #0
-	// Configure PA0 as Analog pin
-	GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitTypeDef GPIO_InitStruct = {0};     /* Declare and zero-initialize GPIO config struct */
  8002a32:	f107 031c 	add.w	r3, r7, #28
  8002a36:	2200      	movs	r2, #0
  8002a38:	601a      	str	r2, [r3, #0]
@@ -5896,7 +5895,7 @@ static void init_adc3_continous_conversion(void)
  8002a3c:	609a      	str	r2, [r3, #8]
  8002a3e:	60da      	str	r2, [r3, #12]
  8002a40:	611a      	str	r2, [r3, #16]
-	ADC_ChannelConfTypeDef sConfig = {0};
+    ADC_ChannelConfTypeDef sConfig = {0};       /* Declare and zero-initialize ADC channel config struct */
  8002a42:	f107 030c 	add.w	r3, r7, #12
  8002a46:	2200      	movs	r2, #0
  8002a48:	601a      	str	r2, [r3, #0]
@@ -5904,7 +5903,7 @@ static void init_adc3_continous_conversion(void)
  8002a4c:	609a      	str	r2, [r3, #8]
  8002a4e:	60da      	str	r2, [r3, #12]
 
-	__HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE();               /* Enable peripheral clock for GPIO Port A */
  8002a50:	2300      	movs	r3, #0
  8002a52:	60bb      	str	r3, [r7, #8]
  8002a54:	4b2d      	ldr	r3, [pc, #180]	@ (8002b0c <init_adc3_continous_conversion+0xe0>)
@@ -5918,23 +5917,22 @@ static void init_adc3_continous_conversion(void)
  8002a68:	60bb      	str	r3, [r7, #8]
  8002a6a:	68bb      	ldr	r3, [r7, #8]
 
-	GPIO_InitStruct.Pin       = GPIO_PIN_0;
+    GPIO_InitStruct.Pin       = GPIO_PIN_0;      /* Select GPIO Pin 0 (PA0) */
  8002a6c:	2301      	movs	r3, #1
  8002a6e:	61fb      	str	r3, [r7, #28]
-	GPIO_InitStruct.Mode      = GPIO_MODE_ANALOG;
+    GPIO_InitStruct.Mode      = GPIO_MODE_ANALOG;/* Set GPIO Pin 0 mode to Analog mode */
  8002a70:	2303      	movs	r3, #3
  8002a72:	623b      	str	r3, [r7, #32]
-	GPIO_InitStruct.Pull      = GPIO_NOPULL;
+    GPIO_InitStruct.Pull      = GPIO_NOPULL;     /* No internal pull-up or pull-down resistor */
  8002a74:	2300      	movs	r3, #0
  8002a76:	627b      	str	r3, [r7, #36]	@ 0x24
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);     /* Apply GPIO initialization configuration to PA0 */
  8002a78:	f107 031c 	add.w	r3, r7, #28
  8002a7c:	4619      	mov	r1, r3
  8002a7e:	4824      	ldr	r0, [pc, #144]	@ (8002b10 <init_adc3_continous_conversion+0xe4>)
  8002a80:	f7fe fb04 	bl	800108c <HAL_GPIO_Init>
 
-	// Configure ADC3 module for continuous conversion
-	__HAL_RCC_ADC3_CLK_ENABLE();
+    __HAL_RCC_ADC3_CLK_ENABLE();                /* Enable peripheral clock for ADC3 module */
  8002a84:	2300      	movs	r3, #0
  8002a86:	607b      	str	r3, [r7, #4]
  8002a88:	4b20      	ldr	r3, [pc, #128]	@ (8002b0c <init_adc3_continous_conversion+0xe0>)
@@ -5948,70 +5946,70 @@ static void init_adc3_continous_conversion(void)
  8002a9c:	607b      	str	r3, [r7, #4]
  8002a9e:	687b      	ldr	r3, [r7, #4]
 
-	hadc3.Instance            	       = ADC3;
+    hadc3.Instance                     = ADC3;                     /* Assign ADC3 register block pointer */
  8002aa0:	4b1c      	ldr	r3, [pc, #112]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002aa2:	4a1d      	ldr	r2, [pc, #116]	@ (8002b18 <init_adc3_continous_conversion+0xec>)
  8002aa4:	601a      	str	r2, [r3, #0]
-	hadc3.Init.ClockPrescaler          = ADC_CLOCK_SYNC_PCLK_DIV2;
+    hadc3.Init.ClockPrescaler          = ADC_CLOCK_SYNC_PCLK_DIV2; /* Set ADC clock prescaler to PCLK2 divided by 2 */
  8002aa6:	4b1b      	ldr	r3, [pc, #108]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002aa8:	2200      	movs	r2, #0
  8002aaa:	605a      	str	r2, [r3, #4]
-	hadc3.Init.Resolution              = ADC_RESOLUTION_12B;
+    hadc3.Init.Resolution              = ADC_RESOLUTION_12B;       /* Set ADC resolution to 12-bit (0-4095) */
  8002aac:	4b19      	ldr	r3, [pc, #100]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002aae:	2200      	movs	r2, #0
  8002ab0:	609a      	str	r2, [r3, #8]
-	hadc3.Init.ContinuousConvMode      = ENABLE;
+    hadc3.Init.ContinuousConvMode      = ENABLE;                   /* Enable Continuous Conversion Mode */
  8002ab2:	4b18      	ldr	r3, [pc, #96]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002ab4:	2201      	movs	r2, #1
  8002ab6:	761a      	strb	r2, [r3, #24]
-	hadc3.Init.DiscontinuousConvMode   = DISABLE;
+    hadc3.Init.DiscontinuousConvMode   = DISABLE;                  /* Disable Discontinuous Mode */
  8002ab8:	4b16      	ldr	r3, [pc, #88]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002aba:	2200      	movs	r2, #0
  8002abc:	f883 2020 	strb.w	r2, [r3, #32]
-	hadc3.Init.ExternalTrigConvEdge    = ADC_EXTERNALTRIGCONVEDGE_NONE;
+    hadc3.Init.ExternalTrigConvEdge    = ADC_EXTERNALTRIGCONVEDGE_NONE; /* No external trigger edge (software start) */
  8002ac0:	4b14      	ldr	r3, [pc, #80]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002ac2:	2200      	movs	r2, #0
  8002ac4:	62da      	str	r2, [r3, #44]	@ 0x2c
-	hadc3.Init.ExternalTrigConv        = ADC_SOFTWARE_START;
+    hadc3.Init.ExternalTrigConv        = ADC_SOFTWARE_START;       /* Set trigger source to software start */
  8002ac6:	4b13      	ldr	r3, [pc, #76]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002ac8:	4a14      	ldr	r2, [pc, #80]	@ (8002b1c <init_adc3_continous_conversion+0xf0>)
  8002aca:	629a      	str	r2, [r3, #40]	@ 0x28
-	hadc3.Init.DataAlign               = ADC_DATAALIGN_RIGHT;
+    hadc3.Init.DataAlign               = ADC_DATAALIGN_RIGHT;      /* Align converted data right in ADC_DR */
  8002acc:	4b11      	ldr	r3, [pc, #68]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002ace:	2200      	movs	r2, #0
  8002ad0:	60da      	str	r2, [r3, #12]
-	hadc3.Init.NbrOfConversion         = 1;
+    hadc3.Init.NbrOfConversion         = 1;                        /* Specify 1 regular conversion in sequence */
  8002ad2:	4b10      	ldr	r3, [pc, #64]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002ad4:	2201      	movs	r2, #1
  8002ad6:	61da      	str	r2, [r3, #28]
-	hadc3.Init.DMAContinuousRequests   = DISABLE;
+    hadc3.Init.DMAContinuousRequests   = DISABLE;                  /* Disable DMA continuous requests */
  8002ad8:	4b0e      	ldr	r3, [pc, #56]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002ada:	2200      	movs	r2, #0
  8002adc:	f883 2030 	strb.w	r2, [r3, #48]	@ 0x30
-	hadc3.Init.EOCSelection            = ADC_EOC_SINGLE_CONV;
+    hadc3.Init.EOCSelection            = ADC_EOC_SINGLE_CONV;      /* Set EOC flag at the end of single conversion */
  8002ae0:	4b0c      	ldr	r3, [pc, #48]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002ae2:	2201      	movs	r2, #1
  8002ae4:	615a      	str	r2, [r3, #20]
-	HAL_ADC_Init(&hadc3);
+    HAL_ADC_Init(&hadc3);                       /* Initialize ADC3 peripheral with handle settings */
  8002ae6:	480b      	ldr	r0, [pc, #44]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002ae8:	f7fd fe16 	bl	8000718 <HAL_ADC_Init>
 
-	sConfig.Channel = ADC_CHANNEL_0;
+    sConfig.Channel = ADC_CHANNEL_0;            /* Select ADC Channel 0 (mapped to PA0) */
  8002aec:	2300      	movs	r3, #0
  8002aee:	60fb      	str	r3, [r7, #12]
-	sConfig.Rank = 1;
+    sConfig.Rank = 1;                           /* Assign Channel 0 as rank 1 in conversion sequence */
  8002af0:	2301      	movs	r3, #1
  8002af2:	613b      	str	r3, [r7, #16]
-	sConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
+    sConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES; /* Set channel sampling time to 480 ADC clock cycles */
  8002af4:	2307      	movs	r3, #7
  8002af6:	617b      	str	r3, [r7, #20]
 
-	HAL_ADC_ConfigChannel(&hadc3, &sConfig);
+    HAL_ADC_ConfigChannel(&hadc3, &sConfig);    /* Configure regular channel parameters for ADC3 */
  8002af8:	f107 030c 	add.w	r3, r7, #12
  8002afc:	4619      	mov	r1, r3
  8002afe:	4805      	ldr	r0, [pc, #20]	@ (8002b14 <init_adc3_continous_conversion+0xe8>)
  8002b00:	f7fd ffb0 	bl	8000a64 <HAL_ADC_ConfigChannel>
-}
+}                                               /* End of init_adc3_continous_conversion function */
  8002b04:	bf00      	nop
  8002b06:	3730      	adds	r7, #48	@ 0x30
  8002b08:	46bd      	mov	sp, r7
@@ -6023,62 +6021,44 @@ static void init_adc3_continous_conversion(void)
  8002b1c:	0f000001 	.word	0x0f000001
 
 08002b20 <main>:
-/*==========================================================
- * MAIN
- *==========================================================*/
+/* Global Variable */
+uint32_t SensorValue = 0U;                      /* Global variable to store ADC conversion result */
 
-int main(void)
-{
+/* Main entry point of application */
+int main(void)                                  /* Main function definition */
+{                                               /* Start of main function body */
  8002b20:	b580      	push	{r7, lr}
  8002b22:	af00      	add	r7, sp, #0
-    /*------------------------------------------------------
-     * Initialize HAL
-     *------------------------------------------------------*/
-    HAL_Init();
+    HAL_Init();                                 /* Initialize STM32 HAL Library and SysTick timer */
  8002b24:	f7fd fd5a 	bl	80005dc <HAL_Init>
-
-    /*------------------------------------------------------
-     * Configure System Clock
-     *------------------------------------------------------*/
-    SystemClock_Config();
+    SystemClock_Config();                       /* Configure system clock to HSI 16 MHz */
  8002b28:	f000 f81e 	bl	8002b68 <SystemClock_Config>
-
-    /*------------------------------------------------------
-     * Initialize USART2
-     *------------------------------------------------------*/
-    UART2_Init();
+    UART2_Init();                               /* Initialize USART2 peripheral for printf logging */
  8002b2c:	f000 f900 	bl	8002d30 <UART2_Init>
-
-    /*------------------------------------------------------
-     * Initialize ADC3
-     *------------------------------------------------------*/
-    Adc3InitStart();
+    Adc3InitStart();                            /* Initialize ADC3 hardware module and GPIO PA0 */
  8002b30:	f7ff ff70 	bl	8002a14 <Adc3InitStart>
 
-
-    /*------------------------------------------------------
-     * Main Application Loop
-     *------------------------------------------------------*/
-    printf("Setup done\r\n");
+    printf("Setup done\r\n");                   /* Print initialization complete message to console */
  8002b34:	4809      	ldr	r0, [pc, #36]	@ (8002b5c <main+0x3c>)
  8002b36:	f000 fad3 	bl	80030e0 <puts>
-    while (1)
-    {
-    	SensorValue = ReadAdc3PA0();
+
+    while (1)                                   /* Infinite application loop */
+    {                                           /* Start of infinite loop */
+        SensorValue = ReadAdc3PA0();            /* Trigger conversion and read ADC value from PA0 */
  8002b3a:	f7ff ff59 	bl	80029f0 <ReadAdc3PA0>
  8002b3e:	4603      	mov	r3, r0
  8002b40:	4a07      	ldr	r2, [pc, #28]	@ (8002b60 <main+0x40>)
  8002b42:	6013      	str	r3, [r2, #0]
-    	printf("ADC Value: %ld\r\n", SensorValue);
+        printf("ADC Value: %ld\r\n", SensorValue); /* Print converted ADC value over UART */
  8002b44:	4b06      	ldr	r3, [pc, #24]	@ (8002b60 <main+0x40>)
  8002b46:	681b      	ldr	r3, [r3, #0]
  8002b48:	4619      	mov	r1, r3
  8002b4a:	4806      	ldr	r0, [pc, #24]	@ (8002b64 <main+0x44>)
  8002b4c:	f000 fa60 	bl	8003010 <iprintf>
-        HAL_Delay(100);
+        HAL_Delay(100);                         /* Delay 100 milliseconds between readings */
  8002b50:	2064      	movs	r0, #100	@ 0x64
  8002b52:	f7fd fdbd 	bl	80006d0 <HAL_Delay>
-    	SensorValue = ReadAdc3PA0();
+        SensorValue = ReadAdc3PA0();            /* Trigger conversion and read ADC value from PA0 */
  8002b56:	bf00      	nop
  8002b58:	e7ef      	b.n	8002b3a <main+0x1a>
  8002b5a:	bf00      	nop
@@ -6087,22 +6067,22 @@ int main(void)
  8002b64:	08003dc8 	.word	0x08003dc8
 
 08002b68 <SystemClock_Config>:
- * APB1   = 16 MHz
- * APB2   = 16 MHz
- *==========================================================*/
+    }                                           /* End of infinite loop */
+}                                               /* End of main function */
 
-void SystemClock_Config(void)
-{
+/* Configure System Clock to 16 MHz using HSI */
+void SystemClock_Config(void)                   /* System clock configuration function */
+{                                               /* Start of clock configuration */
  8002b68:	b580      	push	{r7, lr}
  8002b6a:	b092      	sub	sp, #72	@ 0x48
  8002b6c:	af00      	add	r7, sp, #0
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0}; /* Declare and zero-initialize oscillator config struct */
  8002b6e:	f107 0314 	add.w	r3, r7, #20
  8002b72:	2234      	movs	r2, #52	@ 0x34
  8002b74:	2100      	movs	r1, #0
  8002b76:	4618      	mov	r0, r3
  8002b78:	f000 fb92 	bl	80032a0 <memset>
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0}; /* Declare and zero-initialize clock config struct */
  8002b7c:	463b      	mov	r3, r7
  8002b7e:	2200      	movs	r2, #0
  8002b80:	601a      	str	r2, [r3, #0]
@@ -6111,77 +6091,49 @@ void SystemClock_Config(void)
  8002b86:	60da      	str	r2, [r3, #12]
  8002b88:	611a      	str	r2, [r3, #16]
 
-    /*------------------------------------------------------
-     * Configure HSI
-     *------------------------------------------------------*/
-
-    RCC_OscInitStruct.OscillatorType =
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI; /* Select High-Speed Internal (HSI) oscillator */
  8002b8a:	2302      	movs	r3, #2
  8002b8c:	617b      	str	r3, [r7, #20]
-        RCC_OSCILLATORTYPE_HSI;
-
-    RCC_OscInitStruct.HSIState =
+    RCC_OscInitStruct.HSIState = RCC_HSI_ON;                  /* Turn ON the HSI oscillator */
  8002b8e:	2301      	movs	r3, #1
  8002b90:	623b      	str	r3, [r7, #32]
-        RCC_HSI_ON;
-
-    RCC_OscInitStruct.HSICalibrationValue =
+    RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT; /* Set default HSI calibration value */
  8002b92:	2310      	movs	r3, #16
  8002b94:	627b      	str	r3, [r7, #36]	@ 0x24
-        RCC_HSICALIBRATION_DEFAULT;
-
-    RCC_OscInitStruct.PLL.PLLState =
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_OFF;              /* Disable PLL as 16 MHz HSI is sufficient */
  8002b96:	2301      	movs	r3, #1
  8002b98:	62fb      	str	r3, [r7, #44]	@ 0x2c
-        RCC_PLL_OFF;
 
-
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)     /* Configure RCC oscillator, check for error */
  8002b9a:	f107 0314 	add.w	r3, r7, #20
  8002b9e:	4618      	mov	r0, r3
  8002ba0:	f7fe fecc 	bl	800193c <HAL_RCC_OscConfig>
  8002ba4:	4603      	mov	r3, r0
  8002ba6:	2b00      	cmp	r3, #0
  8002ba8:	d001      	beq.n	8002bae <SystemClock_Config+0x46>
-    {
-        while (1)
+    {                                           /* Start error block */
+        while (1);                              /* Trap CPU in infinite loop on clock error */
  8002baa:	bf00      	nop
  8002bac:	e7fd      	b.n	8002baa <SystemClock_Config+0x42>
-     * HCLK   = 16 MHz
-     * APB1   = 16 MHz
-     * APB2   = 16 MHz
-     *------------------------------------------------------*/
+    }                                           /* End error block */
 
-    RCC_ClkInitStruct.ClockType =
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2; /* Configure SYSCLK, HCLK, PCLK1, and PCLK2 */
  8002bae:	230f      	movs	r3, #15
  8002bb0:	603b      	str	r3, [r7, #0]
-        RCC_CLOCKTYPE_HCLK  |
-        RCC_CLOCKTYPE_SYSCLK |
-        RCC_CLOCKTYPE_PCLK1 |
-        RCC_CLOCKTYPE_PCLK2;
-
-    RCC_ClkInitStruct.SYSCLKSource =
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;   /* Set HSI as SYSCLK source */
  8002bb2:	2300      	movs	r3, #0
  8002bb4:	607b      	str	r3, [r7, #4]
-        RCC_SYSCLKSOURCE_HSI;
-
-    RCC_ClkInitStruct.AHBCLKDivider =
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;        /* Set AHB prescaler to 1 (HCLK = 16 MHz) */
  8002bb6:	2300      	movs	r3, #0
  8002bb8:	60bb      	str	r3, [r7, #8]
-        RCC_SYSCLK_DIV1;
-
-    RCC_ClkInitStruct.APB1CLKDivider =
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;         /* Set APB1 prescaler to 1 (PCLK1 = 16 MHz) */
  8002bba:	2300      	movs	r3, #0
  8002bbc:	60fb      	str	r3, [r7, #12]
-        RCC_HCLK_DIV1;
-
-    RCC_ClkInitStruct.APB2CLKDivider =
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;         /* Set APB2 prescaler to 1 (PCLK2 = 16 MHz) */
  8002bbe:	2300      	movs	r3, #0
  8002bc0:	613b      	str	r3, [r7, #16]
-        RCC_HCLK_DIV1;
 
-
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct,
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK) /* Configure bus clocks and flash latency */
  8002bc2:	463b      	mov	r3, r7
  8002bc4:	2100      	movs	r1, #0
  8002bc6:	4618      	mov	r0, r3
@@ -6189,32 +6141,27 @@ void SystemClock_Config(void)
  8002bcc:	4603      	mov	r3, r0
  8002bce:	2b00      	cmp	r3, #0
  8002bd0:	d001      	beq.n	8002bd6 <SystemClock_Config+0x6e>
-                            FLASH_LATENCY_0) != HAL_OK)
-    {
-        while (1)
+    {                                           /* Start error block */
+        while (1);                              /* Trap CPU in infinite loop on clock config failure */
  8002bd2:	bf00      	nop
  8002bd4:	e7fd      	b.n	8002bd2 <SystemClock_Config+0x6a>
-        {
-        }
-    }
-}
+    }                                           /* End error block */
+}                                               /* End of SystemClock_Config */
  8002bd6:	bf00      	nop
  8002bd8:	3748      	adds	r7, #72	@ 0x48
  8002bda:	46bd      	mov	sp, r7
  8002bdc:	bd80      	pop	{r7, pc}
 
 08002bde <SysTick_Handler>:
-/*==========================================================
- * SysTick Interrupt
- *==========================================================*/
 
-void SysTick_Handler(void)
-{
+/* SysTick interrupt handler for HAL delays */
+void SysTick_Handler(void)                      /* SysTick interrupt handler function */
+{                                               /* Start of handler */
  8002bde:	b580      	push	{r7, lr}
  8002be0:	af00      	add	r7, sp, #0
-    HAL_IncTick();
+    HAL_IncTick();                              /* Increment HAL tick count every 1 ms */
  8002be2:	f7fd fd55 	bl	8000690 <HAL_IncTick>
-}
+}                                               /* End of SysTick_Handler */
  8002be6:	bf00      	nop
  8002be8:	bd80      	pop	{r7, pc}
 
@@ -6471,62 +6418,59 @@ void *_sbrk(ptrdiff_t incr)
  8002d2c:	20000268 	.word	0x20000268
 
 08002d30 <UART2_Init>:
- * Parity     = None
- * Stop Bits  = 1
- *==========================================================*/
+#include <stdio.h>                              /* Include standard I/O header for putchar definition */
 
-void UART2_Init(void)
-{
+UART_HandleTypeDef huart2;                      /* Global UART handle for USART2 peripheral */
+
+void UART2_Init(void)                           /* Function to initialize USART2 peripheral configuration */
+{                                               /* Start of UART2_Init function */
  8002d30:	b580      	push	{r7, lr}
  8002d32:	af00      	add	r7, sp, #0
-    huart2.Instance = USART2;
+    huart2.Instance = USART2;                   /* Assign USART2 peripheral register base address */
  8002d34:	4b11      	ldr	r3, [pc, #68]	@ (8002d7c <UART2_Init+0x4c>)
  8002d36:	4a12      	ldr	r2, [pc, #72]	@ (8002d80 <UART2_Init+0x50>)
  8002d38:	601a      	str	r2, [r3, #0]
-
-    huart2.Init.BaudRate     = 115200;
+    huart2.Init.BaudRate     = 115200;          /* Set UART communication baud rate to 115200 bps */
  8002d3a:	4b10      	ldr	r3, [pc, #64]	@ (8002d7c <UART2_Init+0x4c>)
  8002d3c:	f44f 32e1 	mov.w	r2, #115200	@ 0x1c200
  8002d40:	605a      	str	r2, [r3, #4]
-    huart2.Init.WordLength   = UART_WORDLENGTH_8B;
+    huart2.Init.WordLength   = UART_WORDLENGTH_8B; /* Configure 8 data bits word length */
  8002d42:	4b0e      	ldr	r3, [pc, #56]	@ (8002d7c <UART2_Init+0x4c>)
  8002d44:	2200      	movs	r2, #0
  8002d46:	609a      	str	r2, [r3, #8]
-    huart2.Init.StopBits     = UART_STOPBITS_1;
+    huart2.Init.StopBits     = UART_STOPBITS_1; /* Configure 1 stop bit */
  8002d48:	4b0c      	ldr	r3, [pc, #48]	@ (8002d7c <UART2_Init+0x4c>)
  8002d4a:	2200      	movs	r2, #0
  8002d4c:	60da      	str	r2, [r3, #12]
-    huart2.Init.Parity       = UART_PARITY_NONE;
+    huart2.Init.Parity       = UART_PARITY_NONE;/* Disable parity check */
  8002d4e:	4b0b      	ldr	r3, [pc, #44]	@ (8002d7c <UART2_Init+0x4c>)
  8002d50:	2200      	movs	r2, #0
  8002d52:	611a      	str	r2, [r3, #16]
-    huart2.Init.Mode         = UART_MODE_TX;
+    huart2.Init.Mode         = UART_MODE_TX;    /* Configure UART in Transmit-only (TX) mode */
  8002d54:	4b09      	ldr	r3, [pc, #36]	@ (8002d7c <UART2_Init+0x4c>)
  8002d56:	2208      	movs	r2, #8
  8002d58:	615a      	str	r2, [r3, #20]
-    huart2.Init.HwFlowCtl    = UART_HWCONTROL_NONE;
+    huart2.Init.HwFlowCtl    = UART_HWCONTROL_NONE; /* Disable hardware flow control (RTS/CTS) */
  8002d5a:	4b08      	ldr	r3, [pc, #32]	@ (8002d7c <UART2_Init+0x4c>)
  8002d5c:	2200      	movs	r2, #0
  8002d5e:	619a      	str	r2, [r3, #24]
-    huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+    huart2.Init.OverSampling = UART_OVERSAMPLING_16; /* Set 16x oversampling mode */
  8002d60:	4b06      	ldr	r3, [pc, #24]	@ (8002d7c <UART2_Init+0x4c>)
  8002d62:	2200      	movs	r2, #0
  8002d64:	61da      	str	r2, [r3, #28]
 
-    if (HAL_UART_Init(&huart2) != HAL_OK)
+    if (HAL_UART_Init(&huart2) != HAL_OK)       /* Initialize USART2 peripheral with HAL driver */
  8002d66:	4805      	ldr	r0, [pc, #20]	@ (8002d7c <UART2_Init+0x4c>)
  8002d68:	f7ff f842 	bl	8001df0 <HAL_UART_Init>
  8002d6c:	4603      	mov	r3, r0
  8002d6e:	2b00      	cmp	r3, #0
  8002d70:	d001      	beq.n	8002d76 <UART2_Init+0x46>
-    {
-        while (1)
+    {                                           /* Start error block */
+        while (1);                              /* Infinite loop on UART initialization failure */
  8002d72:	bf00      	nop
  8002d74:	e7fd      	b.n	8002d72 <UART2_Init+0x42>
-        {
-        }
-    }
-}
+    }                                           /* End error block */
+}                                               /* End of UART2_Init function */
  8002d76:	bf00      	nop
  8002d78:	bd80      	pop	{r7, pc}
  8002d7a:	bf00      	nop
@@ -6534,17 +6478,14 @@ void UART2_Init(void)
  8002d80:	40004400 	.word	0x40004400
 
 08002d84 <HAL_UART_MspInit>:
- *                    +----> Enable USART clock
- *                    +----> Configure GPIO
- *==========================================================*/
 
-void HAL_UART_MspInit(UART_HandleTypeDef *huart)
-{
+void HAL_UART_MspInit(UART_HandleTypeDef *huart) /* Low-level hardware (MSP) initialization callback for UART */
+{                                               /* Start of HAL_UART_MspInit function */
  8002d84:	b580      	push	{r7, lr}
  8002d86:	b08a      	sub	sp, #40	@ 0x28
  8002d88:	af00      	add	r7, sp, #0
  8002d8a:	6078      	str	r0, [r7, #4]
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitTypeDef GPIO_InitStruct = {0};     /* Declare and zero-initialize GPIO config struct */
  8002d8c:	f107 0314 	add.w	r3, r7, #20
  8002d90:	2200      	movs	r2, #0
  8002d92:	601a      	str	r2, [r3, #0]
@@ -6553,15 +6494,14 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
  8002d98:	60da      	str	r2, [r3, #12]
  8002d9a:	611a      	str	r2, [r3, #16]
 
-    if (huart->Instance == USART2)
+    if (huart->Instance == USART2)              /* Check if initialization is requested for USART2 */
  8002d9c:	687b      	ldr	r3, [r7, #4]
  8002d9e:	681b      	ldr	r3, [r3, #0]
  8002da0:	4a19      	ldr	r2, [pc, #100]	@ (8002e08 <HAL_UART_MspInit+0x84>)
  8002da2:	4293      	cmp	r3, r2
  8002da4:	d12b      	bne.n	8002dfe <HAL_UART_MspInit+0x7a>
-    {
-        /* Enable GPIOA clock */
-        __HAL_RCC_GPIOA_CLK_ENABLE();
+    {                                           /* Start USART2 hardware setup */
+        __HAL_RCC_GPIOA_CLK_ENABLE();           /* Enable clock for GPIO Port A */
  8002da6:	2300      	movs	r3, #0
  8002da8:	613b      	str	r3, [r7, #16]
  8002daa:	4b18      	ldr	r3, [pc, #96]	@ (8002e0c <HAL_UART_MspInit+0x88>)
@@ -6574,9 +6514,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
  8002dba:	f003 0301 	and.w	r3, r3, #1
  8002dbe:	613b      	str	r3, [r7, #16]
  8002dc0:	693b      	ldr	r3, [r7, #16]
-
-        /* Enable USART2 clock */
-        __HAL_RCC_USART2_CLK_ENABLE();
+        __HAL_RCC_USART2_CLK_ENABLE();          /* Enable clock for USART2 peripheral */
  8002dc2:	2300      	movs	r3, #0
  8002dc4:	60fb      	str	r3, [r7, #12]
  8002dc6:	4b11      	ldr	r3, [pc, #68]	@ (8002e0c <HAL_UART_MspInit+0x88>)
@@ -6589,34 +6527,30 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
  8002dd6:	f403 3300 	and.w	r3, r3, #131072	@ 0x20000
  8002dda:	60fb      	str	r3, [r7, #12]
  8002ddc:	68fb      	ldr	r3, [r7, #12]
-         * PA2 = USART2_TX
-         *
-         * Alternate Function 7
-         */
 
-        GPIO_InitStruct.Pin       = GPIO_PIN_2;
+        GPIO_InitStruct.Pin       = GPIO_PIN_2;  /* Select GPIO Pin 2 (PA2 - USART2_TX) */
  8002dde:	2304      	movs	r3, #4
  8002de0:	617b      	str	r3, [r7, #20]
-        GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP; /* Configure as Alternate Function Push-Pull mode */
  8002de2:	2302      	movs	r3, #2
  8002de4:	61bb      	str	r3, [r7, #24]
-        GPIO_InitStruct.Pull      = GPIO_NOPULL;
+        GPIO_InitStruct.Pull      = GPIO_NOPULL; /* Disable internal pull-up / pull-down resistor */
  8002de6:	2300      	movs	r3, #0
  8002de8:	61fb      	str	r3, [r7, #28]
-        GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH; /* Set GPIO output speed to Very High */
  8002dea:	2303      	movs	r3, #3
  8002dec:	623b      	str	r3, [r7, #32]
-        GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
+        GPIO_InitStruct.Alternate = GPIO_AF7_USART2; /* Connect PA2 to Alternate Function 7 (USART2) */
  8002dee:	2307      	movs	r3, #7
  8002df0:	627b      	str	r3, [r7, #36]	@ 0x24
 
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct); /* Initialize PA2 pin with specified configuration */
  8002df2:	f107 0314 	add.w	r3, r7, #20
  8002df6:	4619      	mov	r1, r3
  8002df8:	4805      	ldr	r0, [pc, #20]	@ (8002e10 <HAL_UART_MspInit+0x8c>)
  8002dfa:	f7fe f947 	bl	800108c <HAL_GPIO_Init>
-    }
-}
+    }                                           /* End USART2 hardware setup */
+}                                               /* End of HAL_UART_MspInit function */
  8002dfe:	bf00      	nop
  8002e00:	3728      	adds	r7, #40	@ 0x28
  8002e02:	46bd      	mov	sp, r7
@@ -6627,29 +6561,22 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
  8002e10:	40020000 	.word	0x40020000
 
 08002e14 <__io_putchar>:
- *
- * HAL_UART_Transmit()
- *==========================================================*/
 
-int __io_putchar(int ch)
-{
+int __io_putchar(int ch)                        /* Low-level I/O putchar override for printf redirection */
+{                                               /* Start of __io_putchar function */
  8002e14:	b580      	push	{r7, lr}
  8002e16:	b082      	sub	sp, #8
  8002e18:	af00      	add	r7, sp, #0
  8002e1a:	6078      	str	r0, [r7, #4]
-    HAL_UART_Transmit(&huart2,
+    HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, HAL_MAX_DELAY); /* Transmit single character over USART2 in blocking mode */
  8002e1c:	1d39      	adds	r1, r7, #4
  8002e1e:	f04f 33ff 	mov.w	r3, #4294967295
  8002e22:	2201      	movs	r2, #1
  8002e24:	4803      	ldr	r0, [pc, #12]	@ (8002e34 <__io_putchar+0x20>)
  8002e26:	f7ff f830 	bl	8001e8a <HAL_UART_Transmit>
-                      (uint8_t *)&ch,
-                      1,
-                      HAL_MAX_DELAY);
-
-    return ch;
+    return ch;                                  /* Return character sent */
  8002e2a:	687b      	ldr	r3, [r7, #4]
-}
+}                                               /* End of __io_putchar function */
  8002e2c:	4618      	mov	r0, r3
  8002e2e:	3708      	adds	r7, #8
  8002e30:	46bd      	mov	sp, r7
