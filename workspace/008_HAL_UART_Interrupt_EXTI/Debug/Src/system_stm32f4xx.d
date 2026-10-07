@@ -1,0 +1,17 @@
+Src/system_stm32f4xx.o: ../Src/system_stm32f4xx.c \
+ D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h \
+ D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h \
+ D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Include/core_cm4.h \
+ D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Include/cmsis_version.h \
+ D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Include/cmsis_compiler.h \
+ D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Include/cmsis_gcc.h \
+ D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Include/mpu_armv7.h \
+ D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
+D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:
+D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h:
+D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Include/core_cm4.h:
+D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Include/cmsis_version.h:
+D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Include/cmsis_compiler.h:
+D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Include/cmsis_gcc.h:
+D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Include/mpu_armv7.h:
+D:/Udemy_Course/STM32_HAL_Driver_Development/STM32_HAL_Driver_Developement/workspace/008_HAL_UART_Interrupt_EXTI/Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h:

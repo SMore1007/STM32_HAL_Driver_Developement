@@ -1,0 +1,8 @@
+../Src/uart.c:32:6:UART1_Init	2
+../Src/uart.c:57:6:UART2_Init	2
+../Src/uart.c:82:6:HAL_UART_MspInit	3
+../Src/uart.c:136:6:USART1_IRQHandler	1
+../Src/uart.c:148:6:HAL_UART_TxCpltCallback	2
+../Src/uart.c:163:6:HAL_UART_RxCpltCallback	2
+../Src/uart.c:178:6:HAL_UART_ErrorCallback	2
+../Src/uart.c:192:5:__io_putchar	1
